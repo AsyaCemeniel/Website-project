@@ -160,9 +160,9 @@ body {
 .reveal-text {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 150%;
   left: 0;
-  top: 0;
+  top: -15%;
   background: #17181a;
 }
 
@@ -174,4 +174,9 @@ body {
   border: 2px solid white;
   border-radius: 50%;
   position: absolute;
+}
+
+/*-------------------------Other stuff----------------------------*/
+.scrollmagic-pin-spacer {
+  position: static !important;
 }
