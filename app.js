@@ -1,6 +1,7 @@
 const mouse = document.querySelector(".cursor");
 const mouseTxt = mouse.querySelector("span");
 const burger = document.querySelector(".burger");
+const logo = document.querySelector("#logo");
 
 let controller;
 let slideScene;
@@ -113,4 +114,63 @@ function navToggle(event) {
   }
 }
 
-animateSlides();
+//-------------------Barba page Transitions----------------------------
+barba.init({
+  views: [
+    {
+      namespace: "home",
+      beforeEnter() {
+        animateSlides();
+        logo.href = "./index.html";
+      },
+      beforeLeave() {
+        slideScene.destroy();
+        pageScene.destroy();
+        controller.destroy();
+      },
+    },
+    {
+      namespace: "fashion",
+      beforeEnter() {
+        logo.href = "../index.html";
+        gsap.fromTo(
+          ".nav-header",
+          1,
+          { y: "100%" },
+          { y: "0%", ease: "power2.inOut" }
+        );
+      },
+    },
+  ],
+  transitions: [
+    {
+      leave({ current, next }) {
+        let done = this.async();
+        //Animation
+        const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+        tl.fromTo(current.container, 1, { opacity: 1 }, { opacity: 0 });
+        tl.fromTo(
+          ".swipe",
+          0.5,
+          { x: "-100%" },
+          { x: "0%", onComplete: done },
+          "-=0.5"
+        );
+      },
+      enter({ current, next }) {
+        let done = this.async();
+        //Scroll to the top
+        window.scrollTo(0, 0);
+        //Animation
+        const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+        tl.fromTo(
+          ".swipe",
+          0.5,
+          { x: "0%" },
+          { x: "100%", stagger: 0.2, onComplete: done }
+        );
+        tl.fromTo(next.container, 1, { opacity: 0 }, { opacity: 1 });
+      },
+    },
+  ],
+});
